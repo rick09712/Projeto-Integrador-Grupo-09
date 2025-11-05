@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './OfertasPage.css'; 
 
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'postgresql://foodwaste_db_sir0_user:f3TaZr5Gi9mCMUSA7eeCLE7FPmQmcvic@dpg-d45aif0dl3ps7388pts0-a.ohio-postgres.render.com/foodwaste_db_sir0';
 
 const OfertasPage = () => {
   const [ofertas, setOfertas] = useState([]);
