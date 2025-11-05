@@ -50,8 +50,9 @@ const OfertasPage = () => {
               
               {oferta.tipo === 'venda' ? (
                 <div className="precos">
-                  <span className="preco-original">R$ {oferta.preco_original.toFixed(2)}</span>
-                  <span className="preco-desconto">R$ {oferta.preco_desconto.toFixed(2)}</span>
+                 
+                  <span className="preco-original">R$ {parseFloat(oferta.preco_original).toFixed(2)}</span>
+                  <span className="preco-desconto">R$ {parseFloat(oferta.preco_desconto).toFixed(2)}</span>
                 </div>
               ) : (
                 <p className="doacao-texto">Entre em contato para a retirada.</p>
