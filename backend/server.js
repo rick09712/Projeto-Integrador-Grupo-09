@@ -1,24 +1,24 @@
 const express = require('express');
-const openDb = require('./database');
+const initializeDb = require('./database'); 
 const cors = require('cors'); 
+require('dotenv').config();
 
 const app = express();
-const PORT = 3001;
-
+const PORT = process.env.PORT || 3001; 
 
 app.use(cors()); 
 app.use(express.json()); 
 
 // Inicializa o banco de dados e as rotas
 (async () => {
-  const db = await openDb();
+  const pool = await initializeDb(); 
 
   // ROTA 1: Listar todas as ofertas (Jornada da Mariana)
   app.get('/api/ofertas', async (req, res) => {
     try {
       // Busca as ofertas ordenadas pela mais recente
-      const ofertas = await db.all('SELECT * FROM ofertas ORDER BY data_publicacao DESC');
-      res.json(ofertas);
+      const result = await pool.query('SELECT * FROM ofertas ORDER BY data_publicacao DESC');
+      res.json(result.rows); 
     } catch (error) {
       res.status(500).json({ message: 'Erro ao buscar ofertas.', error: error.message });
     }
@@ -33,13 +33,27 @@ app.use(express.json());
     }
 
     try {
-      const result = await db.run(
-        'INSERT INTO ofertas (nome_produto, descricao, preco_original, preco_desconto, validade, tipo, empresa, contato, data_publicacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime("now"))',
-        [nome_produto, descricao, parseFloat(preco_original) || 0, parseFloat(preco_desconto) || 0, validade, tipo, empresa, contato]
-      );
+        const query = `
+            INSERT INTO ofertas (nome_produto, descricao, preco_original, preco_desconto, validade, tipo, empresa, contato) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+            RETURNING id;
+        `;
+        const values = [
+            nome_produto, 
+            descricao, 
+            parseFloat(preco_original) || 0, 
+            parseFloat(preco_desconto) || 0, 
+            validade, 
+            tipo, 
+            empresa, 
+            contato
+        ];
+
+      const result = await pool.query(query, values);
+
       res.status(201).json({ 
         message: 'Oferta cadastrada com sucesso!', 
-        id: result.lastID,
+        id: result.rows[0].id, 
         data: req.body
       });
     } catch (error) {
@@ -52,9 +66,9 @@ app.use(express.json());
     const { id } = req.params;
 
     try {
-      const result = await db.run('DELETE FROM ofertas WHERE id = ?', id);
+      const result = await pool.query('DELETE FROM ofertas WHERE id = $1', [id]);
 
-      if (result.changes === 0) {
+      if (result.rowCount === 0) { 
         return res.status(404).json({ message: 'Oferta não encontrada.' });
       }
 
