@@ -1,0 +1,84 @@
+.dicas-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.dicas-container h2 {
+    color: #007bff; 
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.dicas-container p {
+    text-align: center;
+    color: #6c757d;
+    margin-bottom: 30px;
+}
+
+.dicas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.dica-card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border-top: 3px solid #ffc107; 
+}
+
+.dica-card h3 {
+    color: var(--text-color);
+    margin-top: 0;
+    font-size: 1.15rem;
+}
+
+.video-card {
+    grid-column: 1 / -1; 
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+.video-placeholder {
+    height: 200px;
+    background-color: #495057;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+/* --- Estilos para Vídeo Responsivo --- */
+
+.video-card {
+    grid-column: 1 / -1; 
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+.video-responsive {
+    overflow: hidden;
+    padding-bottom: 56.25%; 
+    position: relative;
+    height: 0;
+    margin-top: 15px;
+}
+
+.video-responsive iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border: none;
+}
+
+.video-placeholder {
+   
+    display: none;
+}

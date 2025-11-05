@@ -1,0 +1,178 @@
+.ofertas-container h2 {
+   
+    margin-bottom: 10px;
+    padding-top: 20px; 
+}
+.ofertas-container {
+    padding: 0 10px; 
+}
+.ofertas-container p {
+    text-align: center;
+    color: #6c757d;
+    margin-bottom: 25px;
+}
+
+
+.ofertas-grid {
+    display: grid;
+    
+    grid-template-columns: 1fr; 
+    gap: 20px;
+    padding: 0; 
+    max-width: 100%; 
+    margin: 0 auto; 
+}
+
+@media (min-width: 600px) {
+    .ofertas-grid {
+        grid-template-columns: repeat(2, 1fr);
+        
+    }
+}
+
+
+@media (min-width: 992px) {
+    .ofertas-grid {
+        grid-template-columns: repeat(3, 1fr);
+        
+    }
+}
+
+/* ESTILO DOS CARDS */
+
+
+.oferta-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
+    transition: transform 0.3s;
+    border-top: 5px solid; 
+}
+
+.oferta-card.venda {
+    border-color: var(--venda-color);
+}
+
+.oferta-card.doacao {
+    border-color: var(--doacao-color);
+}
+
+.oferta-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.oferta-card h3 {
+    margin-top: 0;
+    font-size: 1.3rem;
+    color: var(--text-color);
+}
+
+.tipo-tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700; 
+    margin-bottom: 10px;
+    color: white; 
+}
+
+.oferta-card.venda .tipo-tag {
+    background-color: var(--venda-color);
+}
+
+.oferta-card.doacao .tipo-tag {
+    background-color: var(--doacao-color);
+    color: var(--text-color); 
+}
+
+.precos {
+    margin: 10px 0;
+    display: flex;
+    align-items: baseline;
+    font-weight: bold;
+}
+
+.preco-original {
+    text-decoration: line-through;
+    color: #adb5bd; 
+    margin-right: 15px;
+    font-size: 1rem;
+}
+
+.preco-desconto {
+    font-size: 1.8rem; 
+    color: var(--primary-color);
+}
+
+.contato-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+.contato-button:hover {
+    background-color: #1e7e34;
+}
+
+
+.gerenciamento-ofertas {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ced4da;
+}
+
+.gerenciamento-ofertas h3 {
+    color: #495057;
+    margin-bottom: 15px;
+}
+
+.lista-ofertas-gerenciamento {
+    list-style: none;
+    padding: 0;
+}
+
+.oferta-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    background-color: var(--secondary-color);
+    border-radius: 4px;
+    border-left: 5px solid;
+    font-size: 0.95rem;
+}
+
+.oferta-item.venda {
+    border-color: var(--venda-color);
+}
+
+.oferta-item.doacao {
+    border-color: var(--doacao-color);
+}
+
+.botao-excluir {
+    background-color: #dc3545; 
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.3s;
+}
+
+.botao-excluir:hover {
+    background-color: #c82333;
+}
