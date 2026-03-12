@@ -1,26 +1,37 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-
 const databaseUrl = process.env.DATABASE_URL;
 
 if (!databaseUrl) {
     console.error("ERRO: Variável de ambiente DATABASE_URL não definida. O PostgreSQL não irá funcionar.");
-   
+    process.exit(1); // Encerra o processo se não houver DATABASE_URL
 }
 
 const pool = new Pool({
     connectionString: databaseUrl,
     ssl: {
         rejectUnauthorized: false 
-    }
+    },
+    // Adiciona configurações de timeout
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 30000,
+    max: 20,
+    // Retry automático
+    statement_timeout: 30000
+});
+
+// Trata erros de conexão
+pool.on('error', (err) => {
+    console.error('Erro inesperado no pool de conexões:', err);
 });
 
 async function initializeDb() {
+    let client;
     try {
-        const client = await pool.connect();
+        client = await pool.connect();
+        console.log("Conectado ao PostgreSQL com sucesso!");
 
-        
         await client.query(`
             CREATE TABLE IF NOT EXISTS ofertas (
                 id SERIAL PRIMARY KEY,
@@ -57,8 +68,10 @@ async function initializeDb() {
         client.release();
         return pool;
     } catch (error) {
+        if (client) {
+            client.release();
+        }
         console.error("Falha ao inicializar o banco de dados:", error);
-        
         throw error;
     }
 }
