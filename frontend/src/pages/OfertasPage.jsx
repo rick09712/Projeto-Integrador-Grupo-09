@@ -14,10 +14,13 @@ const OfertasPage = () => {
 
   const fetchOfertas = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/ofertas`);
+      
+      const response = await fetch(`${API_URL}/ofertas`);
+
       if (!response.ok) {
         throw new Error('Falha ao carregar as ofertas.');
       }
+
       const data = await response.json();
       setOfertas(data);
     } catch (err) {
@@ -56,7 +59,6 @@ const OfertasPage = () => {
 
                 {oferta.tipo === 'venda' ? (
                   <div className="precos">
-                  
                     <span className="preco-original">
                       R$ {precoOriginal.toFixed(2)}
                     </span>
