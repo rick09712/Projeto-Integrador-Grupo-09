@@ -1,34 +1,56 @@
 'use strict';
 
+
 const express = require('express');
-const mongoose = require('mongoose');
+const cors = require('cors');
+const initializeDb = require('./database'); 
 
 const app = express();
 
-const initializeDb = async () => {
-    try {
-        // Database connection logic
-        console.log('Connecting to the database...');
-        await mongoose.connect('mongodb://localhost/mydatabase', {useNewUrlParser: true, useUnifiedTopology: true});
-        console.log('Database connected successfully.');
-    } catch (error) {
-        console.error('Database connection failed:', error);
-        process.exit(1); // Exit with code 1 on failure
-    }
-};
+app.use(express.json());
+app.use(cors()); 
 
-process.on('SIGINT', async () => {
-    console.log('Gracefully shutting down...');
-    await mongoose.disconnect();
-    console.log('Disconnected from database.');
-    process.exit(0);
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date() });
 });
 
-const startServer = async () => {
+
+async function startServer() {
+  try {
+    
     await initializeDb();
-    app.listen(3000, () => {
-        console.log('Server is running on port 3000');
+    console.log('✅ Conexão com PostgreSQL estabelecida.');
+
+    
+    const PORT = process.env.PORT || 3000; 
+    app.listen(PORT, () => {
+      console.log(`🚀 Server listening on port ${PORT}`);
     });
-};
+  } catch (err) {
+    console.error('❌ Falha ao iniciar a aplicação:', err);
+    
+    process.exit(1);
+  }
+}
+
+
+process.on('SIGINT', async () => {
+  console.log('\n⚡ Graceful shutdown iniciado...');
+  try {
+    // O módulo database exporta o pool (ver patch abaixo)
+    const { pool } = require('./database');
+    if (pool) {
+      await pool.end();
+      console.log('✅ Pool PostgreSQL fechado.');
+    }
+  } catch (e) {
+    console.error('Erro ao fechar pool:', e);
+  }
+  process.exit(0);
+});
+
 
 startServer();
+
+module.exports = app;
