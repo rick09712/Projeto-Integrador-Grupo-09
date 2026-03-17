@@ -1,6 +1,6 @@
-# PROJETO INTEGRADOR II: DESENVOLVIMENTO DE SISTEMAS ORIENTADO A DISPOSITIVOS MÓVEIS E BASEADOS NA WEB
+# PROJETO INTEGRADOR : DESENVOLVIMENTO DE SISTEMAS ORIENTADO A DISPOSITIVOS MÓVEIS E BASEADOS NA WEB
 
-## 👥 Integrantes do Grupo 09
+## 👥 Integrantes do Grupo 05
 
 | Nome | Função |
 | :--- | :--- |
@@ -82,4 +82,4 @@ O Backend deve ser iniciado primeiro.
 
 ## 🔗 Link Público (URL para Teste Final e Entrega)
 
-**A URL pública do projeto finalizado no Vercel é: **(https://projeto-integrador-grupo-09.vercel.app/)**
+**A URL pública do projeto finalizado no Vercel é: **(https://projeto-integrador-grupo-05.vercel.app/)**
