@@ -1,35 +1,43 @@
 'use strict';
 const { Pool } = require('pg');
-require('dotenv').config();
+require('dotenv').config();   
+
 
 const databaseUrl = process.env.DATABASE_URL;
 
 if (!databaseUrl) {
-  console.error('ERRO: Variável de ambiente DATABASE_URL não definida. O PostgreSQL não irá funcionar.');
+  console.error(
+    'ERRO: Variável de ambiente DATABASE_URL não definida. O PostgreSQL não irá funcionar.'
+  );
   process.exit(1);
 }
+
 
 const pool = new Pool({
   connectionString: databaseUrl,
   ssl: {
-    rejectUnauthorized: false
+    rejectUnauthorized: false,  
   },
-  connectionTimeoutMillis: 10000,
-  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10_000,
+  idleTimeoutMillis: 30_000,
   max: 20,
-  statement_timeout: 30000
+  statement_timeout: 30_000,
 });
 
 pool.on('error', (err) => {
   console.error('Erro inesperado no pool de conexões:', err);
 });
 
+// -------------------------------------------------------------------
+// Função que garante que o pool está funcionando e cria a tabela
+// -------------------------------------------------------------------
 async function initializeDb() {
   let client;
   try {
     client = await pool.connect();
-    console.log('Conectado ao PostgreSQL com sucesso!');
+    console.log('🔗 Conectado ao PostgreSQL com sucesso!');
 
+    // Cria a tabela caso ainda não exista
     await client.query(`
       CREATE TABLE IF NOT EXISTS ofertas (
         id SERIAL PRIMARY KEY,
@@ -45,11 +53,11 @@ async function initializeDb() {
       );
     `);
 
-    console.log("Banco de dados PostgreSQL inicializado e tabela 'ofertas' verificada.");
+    console.log("✅ Tabela 'ofertas' está pronta.");
 
-    // Insere dados de exemplo apenas se a tabela estiver vazia
-    const res = await client.query('SELECT COUNT(*) FROM ofertas');
-    const count = parseInt(res.rows[0].count, 10);
+  
+    const { rows } = await client.query('SELECT COUNT(*) AS cnt FROM ofertas');
+    const count = parseInt(rows[0].cnt, 10);
 
     if (count === 0) {
       await client.query(
@@ -65,7 +73,7 @@ async function initializeDb() {
           '2025-11-06',
           'venda',
           'Supermercado do Carlos',
-          '(11) 98765-4321'
+          '(11) 98765-4321',
         ]
       );
 
@@ -82,18 +90,18 @@ async function initializeDb() {
           '2025-11-07',
           'doacao',
           'Hortifruti Sustentável',
-          '(11) 99999-0000'
+          '(11) 99999-0000',
         ]
       );
 
-      console.log('Dados de exemplo inseridos no PostgreSQL.');
+      console.log('📦 Dados de exemplo inseridos no PostgreSQL.');
     }
 
-    client.release();
-    return pool;
+    client.release(); 
+    return pool;     
   } catch (error) {
     if (client) client.release();
-    console.error('Falha ao inicializar o banco de dados:', error);
+    console.error('❌ Falha ao inicializar o banco de dados:', error);
     throw error;
   }
 }
@@ -101,5 +109,5 @@ async function initializeDb() {
 
 module.exports = {
   initializeDb,
-  pool
+  pool,
 };
