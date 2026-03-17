@@ -13,9 +13,16 @@ app.use(express.json());
 app.use(cors());
 
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date() });
+app.get('/ofertas', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM ofertas ORDER BY id DESC');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Erro ao buscar ofertas:', error);
+    res.status(500).json({ error: 'Erro ao buscar ofertas' });
+  }
 });
+
 
 async function startServer() {
   try {
