@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './OfertasPage.css';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://projeto-integrador-grupo-09.onrender.com';
 
 const OfertasPage = () => {
   const [ofertas, setOfertas] = useState([]);
