@@ -15,12 +15,8 @@ jobs:
       - name: 🔔 Notificar início do deploy
         run: echo "🚀 Iniciando deploy do backend no Render..."
 
-      - name: 📡 Triggar rebuild no Render
-        run: |
-          curl -X POST \
-            https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys \
-            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-            -H "Content-Type: application/json"
+      - name: 📡 Triggar rebuild no Render via Deploy Hook
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
 
       - name: ✅ Deploy iniciado com sucesso!
         run: echo "✅ Render receberá o rebuild em breve. Acompanhe em: https://dashboard.render.com"
