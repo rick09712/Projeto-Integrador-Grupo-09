@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: function(origin, callback) {
     const allowedOrigins = [
-      'https://projeto-integrador-grupo-09.vercel.app',
+      'https://projeto-integrador-grupo-05.vercel.app',
       'http://localhost:5173',
       'http://localhost:3000',
       'http://localhost:3001'

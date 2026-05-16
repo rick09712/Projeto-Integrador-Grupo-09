@@ -25,7 +25,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <Header setView={setView} />
+      <Header activeView={view} setView={setView} />
       <main className="content">
         {renderContent()}
       </main>
