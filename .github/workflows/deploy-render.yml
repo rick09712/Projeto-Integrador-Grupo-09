@@ -14,10 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🔔 Notificar início do deploy
-        run: echo "🚀 Iniciando deploy do backend no Render..."
+        run: |
+          echo "🚀 Iniciando deploy do backend no Render..."
 
       - name: 📡 Triggar rebuild no Render via Deploy Hook
-        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+        run: |
+          curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
 
       - name: ✅ Deploy iniciado com sucesso!
-        run: echo "✅ Render receberá o rebuild em breve. Acompanhe em: https://dashboard.render.com"
+        run: |
+          echo "✅ Render receberá o rebuild em breve. Acompanhe em: https://dashboard.render.com"
