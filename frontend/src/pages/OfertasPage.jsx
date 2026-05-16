@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './OfertasPage.css';
+import { getLocalOfertas } from '../data/fallbackOfertas';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://projeto-integrador-grupo-09.onrender.com';
 
@@ -24,7 +25,8 @@ const OfertasPage = () => {
       const data = await response.json();
       setOfertas(data);
     } catch (err) {
-      setError(err.message);
+      console.warn('API indisponível. Exibindo ofertas locais:', err.message);
+      setOfertas(getLocalOfertas());
     } finally {
       setLoading(false);
     }

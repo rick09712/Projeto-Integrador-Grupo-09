@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './CadastroOfertaPage.css'; 
+import { getLocalOfertas, removeLocalOferta, saveLocalOferta } from '../data/fallbackOfertas';
 
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://projeto-integrador-grupo-09.onrender.com';
@@ -28,6 +29,10 @@ const CadastroOfertaPage = () => {
   const fetchOfertas = async () => {
     try {
       const response = await fetch(`${API_URL}/ofertas`);
+      if (!response.ok) {
+        throw new Error('API indisponível');
+      }
+
       const data = await response.json();
 
       setOfertasAtivas(
@@ -39,6 +44,13 @@ const CadastroOfertaPage = () => {
       );
     } catch (err) {
       console.error('Erro ao carregar ofertas ativas:', err);
+      setOfertasAtivas(
+        getLocalOfertas().filter(
+          o =>
+            o.empresa === 'Supermercado do Carlos' ||
+            o.empresa === 'Hortifruti Sustentável'
+        )
+      );
     }
   };
 
@@ -85,8 +97,21 @@ const CadastroOfertaPage = () => {
 
       fetchOfertas();
     } catch (error) {
-      setIsError(true);
-      setMessage(error.message);
+      const ofertaLocal = saveLocalOferta(formData);
+
+      setIsError(false);
+      setMessage(`Oferta cadastrada localmente com sucesso! ID: ${ofertaLocal.id}.`);
+      setFormData({
+        nome_produto: '',
+        descricao: '',
+        preco_original: '',
+        preco_desconto: '',
+        validade: '',
+        tipo: 'venda',
+        empresa: 'Supermercado do Carlos',
+        contato: '(11) 98765-4321',
+      });
+      fetchOfertas();
     }
   };
 
@@ -97,6 +122,14 @@ const CadastroOfertaPage = () => {
     }
 
     try {
+      if (String(id).startsWith('local-')) {
+        removeLocalOferta(id);
+        setMessage('Oferta removida com sucesso');
+        setIsError(false);
+        fetchOfertas();
+        return;
+      }
+
       const response = await fetch(`${API_URL}/ofertas/${id}`, {
         method: 'DELETE',
       });
@@ -111,8 +144,10 @@ const CadastroOfertaPage = () => {
       setIsError(false);
       fetchOfertas();
     } catch (error) {
-      setIsError(true);
-      setMessage(`Erro ao excluir: ${error.message}`);
+      removeLocalOferta(id);
+      setIsError(false);
+      setMessage('Oferta removida localmente com sucesso');
+      fetchOfertas();
     }
   };
 
