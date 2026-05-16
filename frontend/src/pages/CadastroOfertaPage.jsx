@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './CadastroOfertaPage.css'; 
 
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://projeto-integrador-grupo-05.onrender.com';
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'https://projeto-integrador-grupo-09.onrender.com';
 
 const CadastroOfertaPage = () => {
   const [formData, setFormData] = useState({
