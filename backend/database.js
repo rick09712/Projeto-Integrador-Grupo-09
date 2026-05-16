@@ -3,7 +3,6 @@
 const { Pool } = require('pg');
 
 const databaseUrl = process.env.DATABASE_URL;
-const isProduction = process.env.NODE_ENV === 'production';
 
 let pgPool = null;
 
@@ -286,11 +285,6 @@ async function initializeDb() {
     client.release();
   } catch (error) {
     console.error('❌ ERRO REAL DO BANCO:', error);
-
-    if (isProduction) {
-      throw error;
-    }
-
     console.warn('⚠️ Falha no PostgreSQL. Usando dados locais em memória.');
     pgPool = null;
   }
